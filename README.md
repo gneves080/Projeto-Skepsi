@@ -1,4 +1,4 @@
-# Web Psicólogo (MVP)
+# Skepsi (MVP)
 
 Interface web moderna e clean para psicólogo com:
 - Login
