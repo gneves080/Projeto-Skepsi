@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PsicoFlow - Entrar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="auth">
+    <div class="auth-card">
+      <div class="brand" style="margin-bottom:18px">
+        <div class="brand-mark" style="padding:0;overflow:hidden;">
+          <img src="./Ske.png" alt="PsicoFlow" style="width:100%;height:100%;object-fit:contain;display:block;" />
+        </div>
+        <div>
+          <div class="brand-title">Skepsi</div>
+          <div class="brand-sub">Acesso ao painel</div>
+        </div>
+      </div>
+
+      <h2 class="card-title" style="margin-top:4px">Entrar</h2>
+      <p class="muted">Use suas credenciais para acessar o sistema.</p>
+
+      <form id="loginForm" class="form" style="margin-top:14px">
+        <label class="field">
+          <span class="label">Email</span>
+          <input type="email" name="email" autocomplete="username" required />
+        </label>
+        <label class="field">
+          <span class="label">Senha</span>
+          <input type="password" name="senha" autocomplete="current-password" required />
+        </label>
+
+        <button class="btn btn-primary" type="submit">Entrar</button>
+
+        <div class="auth-link" style="margin-top:10px;">
+          <button type="button" class="btn btn-ghost" id="btnForgot" style="width:100%;">Esqueci minha senha</button>
+        </div>
+
+        <div class="error" id="loginError" role="alert"></div>
+      </form>
+
+      <div class="panel" style="margin-top:14px; padding:14px 16px; display:none;" id="forgotPanel">
+        <div class="panel-head" style="padding:0; border:none; margin-bottom:10px;">
+          <h2 class="panel-title" style="margin:0;">Recuperar senha</h2>
+          <div class="panel-sub muted">Informe seu email para iniciar a recuperação.</div>
+        </div>
+        <div class="panel-body" style="padding:0;">
+          <form id="forgotForm" class="form">
+            <label class="field">
+              <span class="label">Email</span>
+              <input type="email" name="email" required />
+            </label>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">Enviar</button>
+              <button class="btn" type="button" id="btnBackToLogin">Voltar</button>
+            </div>
+            <div class="status" id="forgotStatus" style="min-height:18px;"></div>
+            <div class="error" id="forgotError" role="alert" style="min-height:18px;"></div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./login.js"></script>
+</body>
+</html>
+

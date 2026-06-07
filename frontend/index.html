@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skepsi - Painel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./style_agenda.css" />
+
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="./Ske.png" alt="PsicoFlow" style="width:30%;height:30%;object-fit:contain;display:block;" />
+        <div>
+          <div class="brand-title">Skepsi</div>
+          <div class="brand-sub">Área de Atendimento</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-link is-active" data-view="dashboard">Eventos</button>
+        <button class="nav-link" data-view="pacientes">Pacientes</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-email" id="userEmail">—</div>
+        <button class="btn btn-ghost" id="btnLogout">Sair</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h1 class="page-title" id="pageTitle">Eventos</h1>
+        <div class="topbar-actions">
+          <button class="btn" id="btnNewPatient">+ Novo paciente</button>
+        </div>
+      </header>
+
+
+
+      <!-- Eventos -->
+      <section class="view" data-section="dashboard">
+        <div class="agenda-grid">
+          <div>
+            <div class="agenda-toolbar">
+              <label class="field" style="margin:0;">
+                <span class="label">Data</span>
+                <input id="agendaDate" class="input date-input" type="date" />
+              </label>
+              <div class="muted" style="font-weight:800;align-self:flex-end;">Eventos do dia</div>
+            </div>
+
+            <div id="agendaDayList" class="agenda-day-list"></div>
+          </div>
+
+          <div class="panel" style="box-shadow:none;background:rgba(255,255,255,.03);">
+              <div class="panel-head" style="border-bottom:1px solid var(--border)">
+              <h2 class="panel-title">Marcar evento</h2>
+              <div class="panel-sub muted">Selecione o paciente cadastrado</div>
+            </div>
+
+            <div class="panel-body" style="padding:14px 16px;">
+              <form id="agendaForm" class="form">
+                <label class="field">
+                  <span class="label">Título</span>
+                  <input id="agendaTitle" required />
+                </label>
+
+                <label class="field">
+                  <span class="label">Paciente (opcional)</span>
+                  <select id="agendaPacienteId" class="input" style="height:44px;">
+                    <option value="">—</option>
+                  </select>
+                </label>
+
+                <div class="row2">
+                  <label class="field">
+                    <span class="label">Data</span>
+                    <input id="agendaDateInput" type="date" class="input" />
+                  </label>
+                  <label class="field">
+                    <span class="label">Hora</span>
+                    <input id="agendaTimeInput" type="time" class="input" />
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span class="label">Observações (opcional)</span>
+                  <textarea id="agendaNotes" class="textarea" rows="4" placeholder="Detalhes do atendimento..." style="margin:0;"></textarea>
+                </label>
+
+                <div class="actions" style="margin-top:10px;">
+                  <button class="btn btn-primary" type="submit">Salvar</button>
+                  <button class="btn" type="button" id="btnReloadAgenda">Atualizar</button>
+                </div>
+
+                <div class="error" id="agendaError" role="alert"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:14px;">
+          <div class="panel-head">
+            <h2 class="panel-title">Futuros</h2>
+            <div class="muted">Próximos 14 dias</div>
+          </div>
+          <div class="panel-body">
+            <div id="agendaUpcoming" class="agenda-day-list"></div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top:14px;">
+
+          <div class="stat-card">
+            <div class="stat-label">Pacientes</div>
+            <div class="stat-value" id="statPacientes">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Atualizações</div>
+            <div class="stat-value" id="statAtualizacao">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Prontuários</div>
+            <div class="stat-value" id="statProntuarios">—</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Acesso rápido</h2>
+            <div class="muted">Gerencie pacientes e prontuários.</div>
+          </div>
+
+          <div class="quick-actions">
+            <button class="qa" data-action="openPacientes">Ver lista de pacientes</button>
+            <button class="qa" data-action="newPatient">Cadastrar paciente</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pacientes -->
+      <section class="view is-hidden" data-section="pacientes">
+        <div class="panel">
+          <div class="panel-head">
+            <h2 class="panel-title">Pacientes</h2>
+            <div class="panel-sub muted">Clique para ver e editar o prontuário.</div>
+          </div>
+
+          <div class="panel-body">
+            <div class="toolbar">
+              <input id="searchInput" class="input" placeholder="Buscar por nome ou CPF" />
+              <button class="btn" id="btnReload">Atualizar</button>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Nascimento</th>
+                    <th>Contato</th>
+                    <th style="width: 160px;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="pacientesTbody"></tbody>
+              </table>
+            </div>
+
+            <div class="empty" id="pacientesEmpty">Nenhum paciente cadastrado.</div>
+          </div>
+        </div>
+
+        <div class="panel panel-split">
+          <div class="panel-head">
+            <h2 class="panel-title">Detalhes</h2>
+            <div class="panel-sub muted" id="selectedPatientSub">Selecione um paciente.</div>
+          </div>
+
+          <div class="panel-body split">
+            <div class="col">
+              <h3 class="card-title">Informações</h3>
+              <form id="patientForm" class="form form-compact">
+                <input type="hidden" id="patientId" />
+
+                <label class="field">
+                  <span class="label">Nome</span>
+                  <input id="fNome" required />
+                </label>
+                <div class="row2">
+                  <label class="field">
+                    <span class="label">CPF</span>
+                    <input id="fCpf" />
+                  </label>
+                  <label class="field">
+                    <span class="label">Data nascimento</span>
+                    <input type="date" id="fDataNascimento" />
+                  </label>
+                </div>
+                <div class="row2">
+                  <label class="field">
+                    <span class="label">Telefone</span>
+                    <input id="fTelefone" />
+                  </label>
+                  <label class="field">
+                    <span class="label">Email</span>
+                    <input type="email" id="fEmail" />
+                  </label>
+                </div>
+
+                <div class="actions">
+                  <button class="btn btn-primary" type="submit">Salvar</button>
+                  <button class="btn btn-danger" type="button" id="btnDeletePatient">Excluir</button>
+                </div>
+              </form>
+              <div class="error" id="patientError" role="alert"></div>
+            </div>
+
+            <div class="col">
+              <h3 class="card-title">Prontuário</h3>
+
+              <div class="tabs" role="tablist" aria-label="Prontuário">
+                <button class="tab-btn is-active" type="button" data-tab="fichas">Fichas</button>
+                <button class="tab-btn" type="button" data-tab="prontuario">Prontuário</button>
+                <button class="tab-btn" type="button" data-tab="log">Log</button>
+              </div>
+
+              <div class="tab-panels">
+                <div class="tab-panel is-active" data-panel="fichas">
+                  <div class="muted small">Resumo/controles auxiliares do atendimento.</div>
+                  <textarea id="fichasTexto" class="textarea" rows="10" placeholder="Escreva uma ficha/resumo aqui..."></textarea>
+                  <div class="actions">
+                    <button class="btn btn-primary" id="btnSaveFichas" type="button">Atualizar fichas</button>
+                  </div>
+                  <div class="status" id="fichasStatus"></div>
+                </div>
+
+                <div class="tab-panel" data-panel="prontuario">
+                  <div class="muted small">Texto do prontuário. Atualizações ficam registradas em log.</div>
+                  <textarea id="prontuarioTexto" class="textarea" rows="14" placeholder="Escreva aqui..."></textarea>
+                  <div class="actions">
+                    <button class="btn btn-primary" id="btnSaveProntuario" type="button">Atualizar prontuário</button>
+                    <button class="btn" id="btnExportProntuario" type="button">Exportar PDF</button>
+                    <button class="btn" id="btnPrintProntuario" type="button">Imprimir</button>
+                  </div>
+                  <div class="status" id="prontuarioStatus"></div>
+                </div>
+
+                <div class="tab-panel" data-panel="log">
+                  <div class="muted small">Histórico das atualizações do prontuário.</div>
+                  <div class="log-list" id="prontuarioUpdates"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal: Novo paciente -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 class="modal-title" id="modalTitle">Cadastrar paciente</h2>
+        <button class="icon-btn" data-close="true" aria-label="Fechar">✕</button>
+      </div>
+
+      <form id="newPatientForm" class="form">
+        <label class="field">
+          <span class="label">Nome</span>
+          <input id="newNome" required />
+        </label>
+        <div class="row2">
+          <label class="field">
+            <span class="label">CPF</span>
+            <input id="newCpf" />
+          </label>
+          <label class="field">
+            <span class="label">Data nascimento</span>
+            <input type="date" id="newDataNascimento" />
+          </label>
+        </div>
+        <div class="row2">
+          <label class="field">
+            <span class="label">Telefone</span>
+            <input id="newTelefone" />
+          </label>
+          <label class="field">
+            <span class="label">Email</span>
+            <input type="email" id="newEmail" />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Criar</button>
+          <button class="btn" type="button" data-close="true">Cancelar</button>
+        </div>
+        <div class="error" id="newPatientError" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+
